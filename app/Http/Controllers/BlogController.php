@@ -30,7 +30,7 @@ class BlogController extends Controller
 
     public function getBlogPost($id)
     {
-        $post = Blog::with('comments')->find($id);
+        $post = Blog::with('comments')->with('user')->find($id);
 
         if($post){
             return Response()->json($post, 200);
@@ -41,7 +41,7 @@ class BlogController extends Controller
 
     public function getBlogPosts()
     {
-        $posts = Blog::paginate(30);
+        $posts = Blog::with('user')->paginate(30);
 
         if($posts->count()){
             return Response()->json($posts, 200);

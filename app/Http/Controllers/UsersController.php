@@ -13,13 +13,15 @@ class UsersController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => 'required|max:40|unique:users',
             'email' => 'required|email|unique:users',
-            'password' => 'required|min:8',
+            'password' => 'required|min:8|confirmed',
         ]);
 
         if ($validator->fails()) {
             return Response()->json($validator->errors(), 400);
         } else {
-            $user = User::create($request->all());
+            $input = $request->all();
+            $input['password'] = bcrypt($input['password']);
+            $user = User::create($input);
             return Response()->json($user, 200);
         }
     }
@@ -38,4 +40,16 @@ class UsersController extends Controller
             return Response()->json('User role updated to '.$user['role'], 200);
         }
     }
+
+    public function getUsers()
+    {
+        $users = User::get();
+
+        if($users->count()){
+            return Response()->json($users, 200);
+        } else {
+            return Response()->json('Not found any users', 404);
+        }
+    }
+
 }

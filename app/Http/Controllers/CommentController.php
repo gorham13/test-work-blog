@@ -20,6 +20,8 @@ class CommentController extends Controller
             return Response()->json($validator->errors(), 400);
         } else {
             $comment = Comment::create($request->all());
+
+            $comment['user'] = $comment->user()->first();
             return Response()->json($comment, 200);
         }
     }

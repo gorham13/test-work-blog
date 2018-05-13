@@ -30,6 +30,7 @@ Route::group(['middleware' => 'api', 'prefix' => 'auth'], function ($router) {
 
 // Route::group(['middleware' => 'jwt.auth'], function () {
     Route::patch('change-role/{id}', 'UsersController@changeRole');
+    Route::get('users', 'UsersController@getUsers');
 
     Route::post('blog', 'BlogController@createBlogPost');
     Route::get('blog', 'BlogController@getBlogPosts');
